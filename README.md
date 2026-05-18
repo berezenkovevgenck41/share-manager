@@ -1,35 +1,15 @@
-# KPI 2026 GitHub Pages App Template
+# Менеджер шерингу речей
 
-Starter repository for small coursework web applications that are implemented from existing markdown requirements and deployed to GitHub Pages.
+Вебзастосунок для обліку особистих речей, які ви даєте друзям у користування (книги, техніка, настільні ігри або інструменти). Він дозволяє створити цифровий каталог власних речей, фіксувати, хто саме взяв певну річ, дату позики та очікуваний термін повернення. Це допомагає підтримувати порядок у власних ресурсах і ніколи не втрачати речі через забудькуватість.
 
-## Intended use
+## Функціонал застосунку
+- **Додавання записів:** Фіксація назви, категорії речі, імені друга, дати видачі та дедлайну повернення.
+- **Динамічний пошук:** Миттєва фільтрація за назвою речі або за іменем позичальника.
+- **Фільтр за категоріями:** Можливість відобразити лише конкретний тип речей (напр. "Техніка" чи "Книги").
+- **Контроль протермінування:** Картки речей, термін повернення яких минув, автоматично підсвічуються червоним кольором та маркуються попередженням.
+- **Збереження даних:** Використання технології `LocalStorage` для локального збереження даних у браузері користувача (дані не зникають після оновлення сторінки).
 
-Use this repository as a template for:
-- the teacher's demo application;
-- student repositories created after requirements are already written;
-- small GitHub Pages projects that must stay within static hosting constraints.
-
-## Suggested workflow
-
-1. Create a new repository from this template.
-2. Add the project requirements as markdown under `requirements/`.
-3. Invoke the `requirements-to-github-pages` skill inside the new repository.
-4. Let the skill:
-   - assess feasibility;
-   - choose the simplest viable stack;
-   - document SDRs;
-   - implement the app;
-   - add demo data and reset flow;
-   - update deployment files.
-
-## Initial repository structure
-
-- `requirements/` - place the markdown requirements here
-- `docs/sdr/` - software decision records
-- `data/` - seed and demo data if needed
-- `.github/workflows/` - GitHub Pages deployment workflow
-
-## Notes
-
-This repository is intentionally minimal. It is not a finished application.
-It is a clean starting point for projects that will be generated from existing requirements.
+## Технологічний стек
+- **HTML5:** Семантична структура сторінки.
+- **CSS3:** Стилізація інтерфейсу з використанням адаптивної сітки CSS Grid та Flexbox для мобільних пристроїв.
+- **Vanilla JavaScript (ES6):** Логіка роботи застосунку, маніпуляції з DOM-деревом та робота з локальним сховищем.
