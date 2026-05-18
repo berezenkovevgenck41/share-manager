@@ -12,6 +12,7 @@
         <header>
             <h1>Менеджер шерингу речей</h1>
             <p class="description">Цифровий каталог особистих речей, які ви даєте друзям у користування</p>
+            <button id="reset-data-btn" class="reset-btn">🔄 Скинути демо-дані</button>
         </header>
         
         <section class="form-section">
@@ -38,44 +39,3 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="lend-date">Дата видачі</label>
-                    <input type="date" id="lend-date" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="return-date">Очікувана дата повернення</label>
-                    <input type="date" id="return-date" required>
-                </div>
-
-                <button type="submit" class="submit-btn full-width">Додати до каталогу</button>
-            </form>
-        </section>
-
-        <section class="controls-section">
-            <div class="controls">
-                <div class="search-wrapper">
-                    <input type="text" id="search-input" placeholder="🔍 Введіть слово для пошуку...">
-                </div>
-                <div class="filter-wrapper">
-                    <select id="filter-category">
-                        <option value="all">Усі категорії</option>
-                        <option value="Техніка">Техніка</option>
-                        <option value="Книги">Книги</option>
-                        <option value="Настільні ігри">Настільні ігри</option>
-                        <option value="Інструменти">Інструменти</option>
-                        <option value="Інше">Інше</option>
-                    </select>
-                </div>
-            </div>
-        </section>
-
-        <section class="list-section">
-            <h2>Каталог речей:</h2>
-            <ul class="item-list" id="items-container">
-                </ul>
-        </section>
-    </div>
-
-    <script src="app.js"></script>
-</body>
-</html>
