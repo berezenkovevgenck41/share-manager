@@ -1,32 +1,275 @@
 :root {
-  color-scheme: light;
-  font-family: Inter, Arial, sans-serif;
+    --primary-color: #4CAF50;
+    --primary-hover: #45a049;
+    --danger-color: #f44336;
+    --danger-bg: #fffafa;
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --text-color: #333;
+    --text-muted: #666;
+    --border-color: #ddd;
+    --input-bg: #ffffff;
+    --form-bg: #f9f9f9;
+    
+    /* Кольори для повернутих речей (архів) */
+    --returned-bg: #f0f0f0;
+    --returned-color: #888;
+    --returned-border: #ccc;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  background: #f5f7fb;
-  color: #1f2937;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin: 0;
 }
 
 .container {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 48px 20px;
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 650px;
 }
 
 h1 {
-  margin-top: 0;
+    text-align: center;
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 5px;
 }
 
-button {
-  border: 0;
-  border-radius: 10px;
-  padding: 10px 16px;
-  cursor: pointer;
+.description {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 25px;
 }
 
-.status {
-  margin-top: 16px;
-  font-weight: 600;
+h2 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+    background: var(--form-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+input, select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: var(--input-bg);
+    width: 100%;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+button.submit-btn {
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button.submit-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Панель пошуку та фільтрів */
+.controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.search-wrapper {
+    flex: 2;
+}
+
+.filter-wrapper {
+    flex: 1;
+}
+
+/* Список карток речей */
+.item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.item-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--primary-color);
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.item-card:hover {
+    transform: translateY(-2px);
+}
+
+.item-card.overdue {
+    border-left-color: var(--danger-color);
+    background-color: var(--danger-bg);
+}
+
+/* Стиль для ПОВЕРНУТИХ речей (архів) */
+.item-card.returned {
+    border-left-color: var(--returned-border);
+    background-color: var(--returned-bg);
+    color: var(--returned-color);
+    box-shadow: none;
+    transform: none;
+}
+
+.item-card.returned .item-title {
+    text-decoration: line-through;
+    color: var(--returned-color);
+}
+
+.item-card.returned .item-category {
+    background-color: #ddd;
+    color: #777;
+}
+
+.item-card.returned .item-info b {
+    color: #555;
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.item-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.item-title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.item-category {
+    font-size: 12px;
+    background: #eee;
+    padding: 3px 8px;
+    border-radius: 12px;
+    color: #555;
+    font-weight: 500;
+}
+
+.item-info {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.item-info b {
+    color: #111;
+}
+
+.overdue-badge {
+    color: var(--danger-color);
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+.returned-badge {
+    color: #555;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+.delete-btn {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.delete-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.empty-state {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 30px;
+    border: 2px dashed var(--border-color);
+    border-radius: 6px;
+    background: #fafafa;
+}
+
+/* Адаптивність для смартфонів */
+@media (max-width: 500px) {
+    form { grid-template-columns: 1fr; }
+    .full-width { grid-column: span 1; }
+    .controls { flex-direction: column; gap: 10px; }
+    .item-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .delete-btn { width: 100%; text-align: center; }
 }
