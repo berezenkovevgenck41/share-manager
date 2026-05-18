@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemsContainer = document.getElementById('items-container');
     const searchInput = document.getElementById('search-input');
     const filterCategory = document.getElementById('filter-category');
-    const resetBtn = document.getElementById('reset-data-btn');
     
     // Встановлюємо сьогоднішню дату за замовчуванням
     const lendDateInput = document.getElementById('lend-date');
@@ -39,16 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     renderItems();
                 });
         }
-    }
-
-    // ОБРОБКА КНОПКИ СКИДАННЯ (Reset Flow)
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-            if (confirm('Ви впевнені, що хочете видалити всі свої записи і повернути демонстраційні дані?')) {
-                localStorage.removeItem('sharedItems'); // Очищаємо пам'ять браузера
-                location.reload(); // Перезавантажуємо сторінку для нової ініціалізації
-            }
-        });
     }
 
     // Перевірка протермінування дедлайну
