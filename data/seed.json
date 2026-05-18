@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Паяльник",
+    "category": "Інструменти",
+    "friend": "Олександр",
+    "lendDate": "2026-05-01",
+    "returnDate": "2026-05-10",
+    "returned": false,
+    "actualReturnDate": null
+  },
+  {
+    "name": "Книга 'Дюна'",
+    "category": "Книги",
+    "friend": "Марія",
+    "lendDate": "2026-05-15",
+    "returnDate": "2026-06-01",
+    "returned": false,
+    "actualReturnDate": null
+  },
+  {
+    "name": "Настільна гра 'Манчкін'",
+    "category": "Настільні ігри",
+    "friend": "Іван",
+    "lendDate": "2026-04-20",
+    "returnDate": "2026-04-25",
+    "returned": true,
+    "actualReturnDate": "2026-04-26"
+  }
+]
