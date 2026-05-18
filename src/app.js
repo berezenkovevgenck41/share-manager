@@ -3,28 +3,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemsContainer = document.getElementById('items-container');
     const searchInput = document.getElementById('search-input');
     const filterCategory = document.getElementById('filter-category');
+    const resetBtn = document.getElementById('reset-data-btn');
     
-    if (document.getElementById('lend-date')) {
-        document.getElementById('lend-date').valueAsDate = new Date();
+    // Встановлюємо сьогоднішню дату за замовчуванням
+    const lendDateInput = document.getElementById('lend-date');
+    if (lendDateInput) {
+        lendDateInput.valueAsDate = new Date();
     }
 
-    let items = JSON.parse(localStorage.getItem('sharedItems')) || [];
+    let items = [];
 
+    // ІНІЦІАЛІЗАЦІЯ ДАНИХ (Завантаження демо-даних або локальних збережень)
+    function initializeData() {
+        const storedData = localStorage.getItem('sharedItems');
+        
+        if (storedData) {
+            // Якщо дані вже є у браузері користувача
+            items = JSON.parse(storedData);
+            renderItems();
+        } else {
+            // Перший запуск: завантажуємо seed.json із папки data/
+            fetch('data/seed.json')
+                .then(response => {
+                    if (!response.ok) throw new Error('Не вдалося завантажити seed data');
+                    return response.json();
+                })
+                .then(data => {
+                    items = data;
+                    saveToLocalStorage(); // Зберігаємо демо-дані в браузер
+                    renderItems();
+                })
+                .catch(error => {
+                    console.error('Помилка ініціалізації:', error);
+                    items = [];
+                    renderItems();
+                });
+        }
+    }
+
+    // ОБРОБКА КНОПКИ СКИДАННЯ (Reset Flow)
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            if (confirm('Ви впевнені, що хочете видалити всі свої записи і повернути демонстраційні дані?')) {
+                localStorage.removeItem('sharedItems'); // Очищаємо пам'ять браузера
+                location.reload(); // Перезавантажуємо сторінку для нової ініціалізації
+            }
+        });
+    }
+
+    // Перевірка протермінування дедлайну
     function isOverdue(returnDateStr) {
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0); // Обнуляємо час для точного порівняння дат
         const returnDate = new Date(returnDateStr);
         return returnDate < today;
     }
 
+    // Головна функція відображення списку
     function renderItems() {
         const searchTerm = searchInput.value.toLowerCase().trim();
         const categoryFilter = filterCategory.value;
 
-        // Створюємо копію масиву із збереженням точних оригінальних індексів
+        // Зберігаємо оригінальні індекси для коректного оновлення статусу
         let itemsWithIndices = items.map((item, index) => ({ item, index }));
 
-        // 1. Фільтрація за текстом та категорією
+        // Фільтрація
         let filtered = itemsWithIndices.filter(entry => {
             const matchesSearch = entry.item.name.toLowerCase().includes(searchTerm) || 
                                   entry.item.friend.toLowerCase().includes(searchTerm);
@@ -32,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchesSearch && matchesCategory;
         });
 
-        // 2. Сортування: активні вгорі, повернуті — в самому низу
+        // Сортування (повернуті речі йдуть униз)
         filtered.sort((a, b) => {
             if (a.item.returned && !b.item.returned) return 1;
             if (!a.item.returned && b.item.returned) return -1;
@@ -46,10 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 3. Виведення карток на екран
+        // Генерація HTML для кожної картки
         filtered.forEach((entry) => {
             const item = entry.item;
-            const originalIndex = entry.index; // Завжди точний номер елемента в базі
+            const originalIndex = entry.index; 
             const overdue = !item.returned && isOverdue(item.returnDate);
             
             const li = document.createElement('li');
@@ -71,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
             itemsContainer.appendChild(li);
         });
 
-        // Навішування подій строго на правильні індекси
+        // Додаємо обробники для нових кнопок "Повернуто"
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 const index = parseInt(e.target.getAttribute('data-index'), 10);
@@ -80,57 +123,64 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Додавання нової речі
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const newItem = {
-            name: document.getElementById('item-name').value,
-            category: document.getElementById('category').value,
-            friend: document.getElementById('friend-name').value,
-            lendDate: document.getElementById('lend-date').value,
-            returnDate: document.getElementById('return-date').value,
-            returned: false,
-            actualReturnDate: null
-        };
+    // Обробка форми додавання нового запису
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const newItem = {
+                name: document.getElementById('item-name').value,
+                category: document.getElementById('category').value,
+                friend: document.getElementById('friend-name').value,
+                lendDate: document.getElementById('lend-date').value,
+                returnDate: document.getElementById('return-date').value,
+                returned: false,
+                actualReturnDate: null
+            };
 
-        items.push(newItem);
-        saveToLocalStorage();
-        
-        document.getElementById('item-name').value = '';
-        document.getElementById('friend-name').value = '';
-        document.getElementById('return-date').value = '';
-        
-        renderItems();
-    });
+            items.push(newItem);
+            saveToLocalStorage();
+            
+            // Очищення полів
+            document.getElementById('item-name').value = '';
+            document.getElementById('friend-name').value = '';
+            document.getElementById('return-date').value = '';
+            
+            renderItems();
+        });
+    }
 
-    // Переведення в сірий стан (архів) замість видалення
+    // Зміна статусу на "Повернуто"
     function markAsReturned(index) {
         items[index].returned = true;
-        items[index].actualReturnDate = new Date().toISOString().split('T')[0];
+        items[index].actualReturnDate = new Date().toISOString().split('T')[0]; // Записуємо поточну дату
         saveToLocalStorage();
         renderItems();
     }
 
+    // Збереження в LocalStorage
     function saveToLocalStorage() {
         localStorage.setItem('sharedItems', JSON.stringify(items));
     }
 
+    // Форматування дати у звичний вигляд DD.MM.YYYY
     function formatDate(dateStr) {
         if (!dateStr) return '';
         const parts = dateStr.split('-');
         return parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : dateStr;
     }
 
+    // Захист від XSS-ін'єкцій
     function escapeHTML(str) {
         return str.replace(/[&<>'"]/g, 
             tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
         );
     }
 
-    // Пошук працює автоматично при введенні літер
-    searchInput.addEventListener('input', renderItems);
-    filterCategory.addEventListener('change', renderItems);
+    // Обробники для пошуку та фільтрації
+    if (searchInput) searchInput.addEventListener('input', renderItems);
+    if (filterCategory) filterCategory.addEventListener('change', renderItems);
 
-    renderItems();
+    // Запуск застосунку
+    initializeData();
 });
