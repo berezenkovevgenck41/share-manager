@@ -1,19 +1,81 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KPI 2026 GitHub Pages Template</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <main class="container">
-      <h1>KPI 2026 GitHub Pages Template</h1>
-      <p>This repository is a starter template for small coursework web applications.</p>
-      <p>Add markdown requirements under <code>requirements/</code>, then run the skill to turn this into a real app.</p>
-      <button id="reset-demo" type="button">Reset demo message</button>
-      <p id="status" class="status"></p>
-    </main>
-    <script type="module" src="./src/app.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Менеджер шерингу речей</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Менеджер шерингу речей</h1>
+            <p class="description">Цифровий каталог особистих речей, які ви даєте друзям у користування</p>
+        </header>
+        
+        <section class="form-section">
+            <form id="share-form">
+                <div class="input-group full-width">
+                    <label for="item-name">Назва речі</label>
+                    <input type="text" id="item-name" placeholder="Напр., Паяльник, Книга 'Дюна'" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="category">Категорія</label>
+                    <select id="category" required>
+                        <option value="Техніка">Техніка</option>
+                        <option value="Книги">Книги</option>
+                        <option value="Настільні ігри">Настільні ігри</option>
+                        <option value="Інструменти">Інструменти</option>
+                        <option value="Інше">Інше</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="friend-name">Кому позичили</label>
+                    <input type="text" id="friend-name" placeholder="Ім'я друга" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="lend-date">Дата видачі</label>
+                    <input type="date" id="lend-date" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="return-date">Очікувана дата повернення</label>
+                    <input type="date" id="return-date" required>
+                </div>
+
+                <button type="submit" class="submit-btn full-width">Додати до каталогу</button>
+            </form>
+        </section>
+
+        <section class="controls-section">
+            <div class="controls">
+                <div class="search-wrapper">
+                    <input type="text" id="search-input" placeholder="🔍 Введіть слово для пошуку...">
+                </div>
+                <div class="filter-wrapper">
+                    <select id="filter-category">
+                        <option value="all">Усі категорії</option>
+                        <option value="Техніка">Техніка</option>
+                        <option value="Книги">Книги</option>
+                        <option value="Настільні ігри">Настільні ігри</option>
+                        <option value="Інструменти">Інструменти</option>
+                        <option value="Інше">Інше</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="list-section">
+            <h2>Каталог речей:</h2>
+            <ul class="item-list" id="items-container">
+                </ul>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
